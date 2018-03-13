@@ -11,6 +11,7 @@ OTA_FIRMWARE_ROOT	= ./firmwares
 # OTA_FIRMWARE_BASE64	= False
 # HTTP_USER		= user
 # HTTP_PASSWORD		= password
+HTTP_SESSION_DIR = \tmp
 
 [mqtt]
 MQTT_HOST		= localhost

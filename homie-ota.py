@@ -6,8 +6,9 @@ __copyright__ = 'Copyright 2016 Jan-Piet Mens'
 
 # wget http://bottlepy.org/bottle.py
 # ... or ... pip install bottle
-from bottle import auth_basic, get, route, request, run, static_file, HTTPResponse, template, abort
+from bottle import auth_basic, get, post, route, request, run, static_file, HTTPResponse, template, abort
 import paho.mqtt.client as paho   # pip install paho-mqtt
+import bottlesession as bs
 import os
 import signal
 import sys
@@ -127,6 +128,41 @@ mqttc = paho.Client("%s-%d" % (APPNAME, os.getpid()), clean_session=True, userda
 # Persisted inventory store
 db = PersistentDict(os.path.join(OTA_FIRMWARE_ROOT, 'inventory.json'), 'c', format='json')
 sensors = PersistentDict(os.path.join(OTA_FIRMWARE_ROOT, 'sensors.json'), 'c', format='json')
+
+# Initialize bottlesession
+try:
+    HTTP_SESSION_DIR = config.get("global", "HTTP_SESSION_DIR")
+except:
+    HTTP_SESSION_DIR = '\tmp'
+session_manager = bs.PickleSession(session_dir=HTTP_SESSION_DIR)
+valid_user = bs.authenticator(session_manager, login_url='/login')
+
+@route('/login')
+def login():
+   username = request.forms.get('username')
+   password = request.forms.get('password')
+   if not username or not password:
+      return static_file('login.html', root='static')
+
+   session = session_manager.get_session()
+   session['valid'] = False
+   if username==HTTP_USER and password==HTTP_PASSWORD:
+      session['valid'] = True
+      session['name'] = username
+   session_manager.save(session)
+   if not session['valid']:
+      #add information about 
+      #return { 'error' : 'Username or password is invalid' }
+      return static_file('login.html', root='static')
+
+   redirect(request.get_cookie('validuserloginredirect', '/'))
+
+@route('/logout')
+def logout():
+   session = session_manager.get_session()
+   session['valid'] = False
+   session_manager.save(session)
+   bottle.redirect('/login')
 
 def check(user, pw):
     # Check user/pw here and return True/False
