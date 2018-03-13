@@ -539,6 +539,10 @@ def on_connect(mosq, userdata, flags, rc):
 
 # on_delete_message handles deleting the topic the messages was received on.
 def on_delete_message(mosq, userdata, msg):
+    try:
+        msg.payload = msg.payload.decode('utf-8')
+    except:
+        logging.debug("Unable to decode this payload: {}".format(msg.payload))
     logging.debug("Received delete callback for topic '%s'" % msg.topic)
     if len(msg.payload) == 0:
         return
@@ -546,6 +550,10 @@ def on_delete_message(mosq, userdata, msg):
     mqttc.publish(msg.topic, payload='', qos=1, retain=True)
 
 def on_sensor(mosq, userdata, msg):
+    try:
+        msg.payload = msg.payload.decode('utf-8')
+    except:
+        logging.debug("Unable to decode this payload: {}".format(msg.payload))
     if msg.topic.endswith("$ota/payload"):
         logging.info("Received OTA payload from %s" % msg.topic)
         return
@@ -593,6 +601,10 @@ def on_ota_info(mosq, userdata, msg):
     device = msg.topic.split('/')[1]
     progress = re.compile("206\s(?P<current>[0-9]+)\/(?P<all>[0-9]+)")
     reason = re.compile("[0-9]+\s(?P<reason>.*)")
+    try:
+        msg.payload = msg.payload.decode('utf-8')
+    except:
+        logging.debug("Unable to decode this payload: {}".format(msg.payload))
     if msg.topic.endswith('status'):
         if msg.payload == "200":
             logging.info("{}: Flash has been done correctly".format(device))
@@ -618,6 +630,10 @@ def on_ota_info(mosq, userdata, msg):
 
 
 def on_control(mosq, userdata, msg):
+    try:
+        msg.payload = msg.payload.decode('utf-8')
+    except:
+        logging.debug("Unable to decode this payload: {}".format(msg.payload))
     logging.debug("CONTROL %s %s" % (msg.topic, str(msg.payload)))
 
     try:
