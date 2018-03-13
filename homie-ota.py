@@ -106,6 +106,16 @@ else:
                         level=logging.INFO,
                         format=LOGFORMAT)
 
+try:
+    if(config.get("mqtt", "MQTT_USERNAME")):
+        console = logging.StreamHandler()
+        console.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+        console.setFormatter(formatter)
+        logging.getLogger('').addHandler(console)
+except:
+    pass
+
 logging.info("Starting " + APPNAME)
 logging.info("INFO MODE")
 logging.debug("DEBUG MODE")
