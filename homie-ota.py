@@ -70,7 +70,7 @@ except:
 try:
     HTTP_USER = config.get("global","HTTP_USER")
 except:
-    pass
+    HTTP_USER = ""
 try:
     HTTP_PASSWORD = config.get("global","HTTP_PASSWORD")
 except:
@@ -144,6 +144,10 @@ def login():
 @view('static/login.html')
 def doLogin():
    session = session_manager.get_session()
+   if HTTP_USER == '':
+       session['valid'] = True
+       session_manager.save(session)
+       redirect('/')
    username = request.forms.get('username')
    password = request.forms.get('password')
    if not username or not password:
