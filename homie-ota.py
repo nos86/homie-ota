@@ -146,19 +146,18 @@ def doLogin():
    session = session_manager.get_session()
    if HTTP_USER == '':
        session['valid'] = True
-       session_manager.save(session)
-       redirect('/')
-   username = request.forms.get('username')
-   password = request.forms.get('password')
-   if not username or not password:
-      return redirect('/')
-   session['valid'] = False
-   if username==HTTP_USER and password==HTTP_PASSWORD:
-      session['valid'] = True
+   else:
+    username = request.forms.get('username')
+    password = request.forms.get('password')
+    if not username or not password:
+        return redirect('/')
+    session['valid'] = False
+    if username==HTTP_USER and password==HTTP_PASSWORD:
+        session['valid'] = True
    session_manager.save(session)
    if not session['valid']:
       return { 'error' : 'Username or password is invalid' }
-   redirect(request.get_cookie('validuserloginredirect', '/'))
+   redirect('/')
 
 @route('/logout', method="GET")
 def logout():
