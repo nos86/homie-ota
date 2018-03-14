@@ -227,7 +227,7 @@ def blurb():
                 continue
             text = text + "\t\t%s %s\n" % (len(path) * '---', file)
 
-    return text
+    return "<pre>"+text+"</pre>"
 
 @route('/firmwares', method="GET")
 @valid_user()
