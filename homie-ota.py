@@ -504,7 +504,7 @@ def ota():
     for k in headers:
         logging.debug("header " + k + ' = ' + headers[k])
 
-    try:
+    if 'X-Esp8266-Version' in headers:
         if '->' in headers.get('X-Esp8266-Version', None):
             # X-Esp8266-Version = d40655e0=button-homie@1.0.0->a75ebc7c7f@1.0.1
             device, f = headers.get('X-Esp8266-Version', None).split('=')
@@ -512,8 +512,7 @@ def ota():
         else:
             # X-Esp8266-Version = cf3a07e0=h-sensor=1.0.1=1.0.2
             device, firmware_name, have_version, want_version = headers.get('X-Esp8266-Version', None).split('=')
-    except:
-        raise
+    else:
         logging.warn("Can't find X-Esp8266-Version in headers; returning 403")
         return HTTPResponse(status=403, body="Not permitted")
 
@@ -549,7 +548,7 @@ def ota():
 
     fw_path = os.path.join(OTA_FIRMWARE_ROOT, fw_file)
     if not os.path.exists(fw_path):
-        logging.warn("%s not found; returning 304" % (fw_path))
+        logging.warning("%s not found; returning 304" % (fw_path))
         return HTTPResponse(status=304, body="OTA aborted, firmware not found")
 
     # check free space vs .bin file on disk and refuse
