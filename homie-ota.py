@@ -163,16 +163,6 @@ def logout():
    session_manager.save(session)
    redirect('/login')
 
-def check(user, pw):
-    # Check user/pw here and return True/False
-    if  user == HTTP_USER and pw == HTTP_PASSWORD:
-        return True
-    else:
-        return False
-
-def conditional_decorator(condition, decorator):
-    return decorator if condition else lambda x: x
-
 def generate_ota_payload(firmware):
     # if no '@' then payload is just a version number
     if '@' not in firmware:
