@@ -328,8 +328,8 @@ def upload():
             logging.info(resp)
             return resp
 
-        fwname = regex_name_result.group(1)
-        fwversion = regex_version_result.group(1)
+        fwname = regex_name_result.group(1).decode('utf-8')
+        fwversion = regex_version_result.group(1).decode('utf-8')
         fw_file = os.path.join(OTA_FIRMWARE_ROOT, fwname + '-' + fwversion + '.bin')
         description_file = os.path.join(OTA_FIRMWARE_ROOT, fwname + '-' + fwversion + '.txt')
 
@@ -343,7 +343,7 @@ def upload():
             return resp
 
         try:
-            f = open(description_file, "wb")
+            f = open(description_file, "w")
             f.write(description)
             f.close()
         except Exception as e:
