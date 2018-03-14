@@ -130,11 +130,7 @@ db = PersistentDict(os.path.join(OTA_FIRMWARE_ROOT, 'inventory.json'), 'c', form
 sensors = PersistentDict(os.path.join(OTA_FIRMWARE_ROOT, 'sensors.json'), 'c', format='json')
 
 # Initialize bottlesession
-try:
-    HTTP_SESSION_DIR = config.get("global", "HTTP_SESSION_DIR")
-except:
-    HTTP_SESSION_DIR = '\tmp'
-session_manager = bs.PickleSession(session_dir=HTTP_SESSION_DIR)
+session_manager = bs.CookieSession()
 valid_user = bs.authenticator(session_manager, login_url='/login')
 
 @get('/login')
