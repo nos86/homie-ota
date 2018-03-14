@@ -113,7 +113,7 @@ class PickleSession(BaseSession):
         filename = os.path.join(self.session_dir, 'session-%s' % sessionid)
         if not os.path.exists(filename):
             return None
-        with open(filename, 'r') as fp:
+        with open(filename, 'rb') as fp:
             session = pickle.load(fp)
         return session
 
@@ -121,8 +121,10 @@ class PickleSession(BaseSession):
         sessionid = data['sessionid']
         fileName = os.path.join(self.session_dir, 'session-%s' % sessionid)
         tmpName = fileName + '.' + str(uuid.uuid4())
-        with open(tmpName, 'w') as fp:
+        with open(tmpName, 'wb') as fp:
             self.session = pickle.dump(data, fp)
+        if os.path.isfile(fileName):
+            os.remove(fileName)
         os.rename(tmpName, fileName)
 
 
@@ -169,7 +171,7 @@ class CookieSession(BaseSession):
             else:
                 #  save off a secret to a tmp file
                 secret = ''.join([
-                    random.choice(string.letters)
+                    random.choice(string.ascii_letters)
                     for x in range(32)])
 
                 old_umask = os.umask(int('077', 8))
