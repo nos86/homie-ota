@@ -6,7 +6,7 @@ __copyright__ = 'Copyright 2016 Jan-Piet Mens'
 
 # wget http://bottlepy.org/bottle.py
 # ... or ... pip install bottle
-from bottle import auth_basic, get, post, route, request, run, static_file, HTTPResponse, template, abort
+from bottle import auth_basic, get, post, route, request, run, static_file, HTTPResponse, template, abort, view, redirect
 import paho.mqtt.client as paho   # pip install paho-mqtt
 import bottlesession as bs
 import os
@@ -137,24 +137,27 @@ except:
 session_manager = bs.PickleSession(session_dir=HTTP_SESSION_DIR)
 valid_user = bs.authenticator(session_manager, login_url='/login')
 
-@route('/login')
+@get('/login')
+@view('static/login.html')
 def login():
+   session = session_manager.get_session()
+   if session['valid']:
+       redirect('/')
+
+@post('/login')
+@view('static/login.html')
+def doLogin():
+   session = session_manager.get_session()
    username = request.forms.get('username')
    password = request.forms.get('password')
    if not username or not password:
-      return static_file('login.html', root='static')
-
-   session = session_manager.get_session()
+      return redirect('/')
    session['valid'] = False
    if username==HTTP_USER and password==HTTP_PASSWORD:
       session['valid'] = True
-      session['name'] = username
    session_manager.save(session)
    if not session['valid']:
-      #add information about 
-      #return { 'error' : 'Username or password is invalid' }
-      return static_file('login.html', root='static')
-
+      return { 'error' : 'Username or password is invalid' }
    redirect(request.get_cookie('validuserloginredirect', '/'))
 
 @route('/logout')
@@ -162,7 +165,7 @@ def logout():
    session = session_manager.get_session()
    session['valid'] = False
    session_manager.save(session)
-   bottle.redirect('/login')
+   redirect('/login')
 
 def check(user, pw):
     # Check user/pw here and return True/False
@@ -223,7 +226,7 @@ def uptime(seconds=0):
 
 
 @get('/blurb')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def blurb():
     text =  """Homie OTA server running.
     OTA endpoint is: http://{host}:{port}/{endpoint}
@@ -241,40 +244,40 @@ def blurb():
     return text
 
 @get('/firmware')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def firmware():
     fw = scan_firmware()
     return template('templates/firmware', base_url=OTA_BASE_URL, fw=fw)
 
 @get('/')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def inventory():
     fw = scan_firmware()
     return template('templates/inventory', base_url=OTA_BASE_URL, db=db, fw=fw)
 
 @get('/<filename:re:.*\.css>')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def stylesheets(filename):
     return static_file(filename, root='static/css')
 
 @get('/<filename:re:.*\.png>')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def png(filename):
     return static_file(filename, root='static/img')
 
 @get('/<filename:re:.*\.js>')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def javascript(filename):
     return static_file(filename, root='static/js')
 
 @get('/log')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def showlog():
     logdata = open(LOGFILE, "r").read()
     return template('templates/log', base_url=OTA_BASE_URL, data=logdata)
 
 @get('/device/<device>')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def showdevice(device):
 
     data = None
@@ -288,7 +291,7 @@ def showdevice(device):
     return template('templates/device', base_url=OTA_BASE_URL, device=device, data=data, sensor=sensor)
 
 @route('/firmware/<fw_file>', method='DELETE')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def delete(fw_file):
     fw_path = os.path.join(OTA_FIRMWARE_ROOT, fw_file)
 
@@ -313,7 +316,7 @@ def delete(fw_file):
     return resp
 
 @route('/upload', method='POST')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def upload():
     '''Accept an uploaded, compiled binary sketch and obtain the firmware's
        name and version from the magic described in
@@ -369,7 +372,7 @@ def upload():
     return "File is missing"
 
 @route('/update', method='POST')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def update():
     device = request.forms.get('device')
     firmware = request.forms.get('firmware')
@@ -423,7 +426,7 @@ def update():
 
 # Handle deleting a device from the mqtt broker, and the local db.
 @route('/device/<device_id>', method='DELETE')
-@conditional_decorator('HTTP_USER' in globals() and 'HTTP_PASSWORD' in globals(), auth_basic(check))
+@valid_user()
 def delete_device(device_id):
     topics = "%s/%s/#" % (MQTT_SENSOR_PREFIX, device_id)
     mqttc.loop_stop()
