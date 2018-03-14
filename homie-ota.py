@@ -273,20 +273,10 @@ def main_view():
     fw = scan_firmware()
     return template('templates/inventory', base_url=OTA_BASE_URL, db=db, fw=fw)
 
-@route('/<filename:re:.*\\.css>', method="GET")
-@valid_user()
-def stylesheets(filename):
-    return static_file(filename, root='static/css')
-
-@route('/<filename:re:.*\\.png>', method="GET")
-@valid_user()
-def png(filename):
-    return static_file(filename, root='static/img')
-
-@route('/<filename:re:.*\\.js>', method="GET")
-@valid_user()
-def javascript(filename):
-    return static_file(filename, root='static/js')
+@route('/assets/<filename:path>', method="GET")
+def getAsset(filename):
+    logging.info('GET {}'.format(filename))
+    return static_file(filename, root='static/assets')
 
 @route('/log', method="GET")
 @valid_user()
