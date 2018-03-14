@@ -133,14 +133,14 @@ sensors = PersistentDict(os.path.join(OTA_FIRMWARE_ROOT, 'sensors.json'), 'c', f
 session_manager = bs.CookieSession()
 valid_user = bs.authenticator(session_manager, login_url='/login')
 
-@get('/login')
+@route('/login', method="GET")
 @view('static/login.html')
 def login():
    session = session_manager.get_session()
    if session['valid']:
        redirect('/')
 
-@post('/login')
+@route('/login', method="POST")
 @view('static/login.html')
 def doLogin():
    session = session_manager.get_session()
@@ -156,7 +156,7 @@ def doLogin():
       return { 'error' : 'Username or password is invalid' }
    redirect(request.get_cookie('validuserloginredirect', '/'))
 
-@route('/logout')
+@route('/logout', method="GET")
 def logout():
    session = session_manager.get_session()
    session['valid'] = False
