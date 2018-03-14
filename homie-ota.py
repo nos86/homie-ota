@@ -241,17 +241,17 @@ def inventory():
     fw = scan_firmware()
     return template('templates/inventory', base_url=OTA_BASE_URL, db=db, fw=fw)
 
-@get('/<filename:re:.*\.css>')
+@get('/<filename:re:.*\\.css>')
 @valid_user()
 def stylesheets(filename):
     return static_file(filename, root='static/css')
 
-@get('/<filename:re:.*\.png>')
+@get('/<filename:re:.*\\.png>')
 @valid_user()
 def png(filename):
     return static_file(filename, root='static/img')
 
-@get('/<filename:re:.*\.js>')
+@get('/<filename:re:.*\\.js>')
 @valid_user()
 def javascript(filename):
     return static_file(filename, root='static/js')
@@ -444,7 +444,7 @@ def scan_firmware():
         if not fw_file.endswith('.bin'):
             continue
 
-        regex = re.compile("(.*)\-((\d+\.\d+\.\d+\.\d+)|(\d+\.\d+.\d+))\.bin")
+        regex = re.compile("(.*)\\-((\\d+\\.\\d+\\.\\d+\\.\\d+)|(\\d+\\.\\d+.\\d+))\\.bin")
         regex_result = regex.search(fw_file)
 
         if not regex_result:
@@ -623,8 +623,8 @@ def on_sensor(mosq, userdata, msg):
 
 def on_ota_info(mosq, userdata, msg):
     device = msg.topic.split('/')[1]
-    progress = re.compile("206\s(?P<current>[0-9]+)\/(?P<all>[0-9]+)")
-    reason = re.compile("[0-9]+\s(?P<reason>.*)")
+    progress = re.compile("206\\s(?P<current>[0-9]+)/(?P<all>[0-9]+)")
+    reason = re.compile("[0-9]+\\s(?P<reason>.*)")
     try:
         msg.payload = msg.payload.decode('utf-8')
     except:
