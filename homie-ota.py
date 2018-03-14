@@ -241,6 +241,16 @@ def firmware():
 @route('/devices', method="GET")
 @valid_user()
 def inventory():
+    data = []
+    for device in db:
+        tmp = db[device]
+        tmp['device']=device
+        data.append(tmp)
+    return json.dumps(data)
+
+@route('/', method="GET")
+@valid_user()
+def main_view():
     fw = scan_firmware()
     return template('templates/inventory', base_url=OTA_BASE_URL, db=db, fw=fw)
 
