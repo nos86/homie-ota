@@ -245,6 +245,21 @@ def inventory():
     for device in db:
         tmp = db[device]
         tmp['device']=device
+        if device in sensors:
+            try:
+                extra = json.loads(sensors[device]['$implementation/config'])
+                tmp['wifi_ssid'] = extra['wifi']['ssid']
+                tmp['mqtt_host'] = extra['mqtt']['host']
+                tmp['mqtt_port'] = extra['mqtt']['port']
+                tmp['mqtt_auth'] = extra['mqtt']['auth']
+                tmp['ota'] = extra['ota']['enabled']
+            except Exception as e:
+                logging.warning("Unable to extract extra information: {}".format(str(e)))
+                tmp['wifi_ssid'] = ""
+                tmp['mqtt_host'] = ""
+                tmp['mqtt_port'] = ""
+                tmp['mqtt_auth'] = ""
+                tmp['ota'] = ""
         data.append(tmp)
     return json.dumps(data)
 
