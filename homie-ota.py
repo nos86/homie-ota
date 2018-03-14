@@ -6,7 +6,7 @@ __copyright__ = 'Copyright 2016 Jan-Piet Mens'
 
 # wget http://bottlepy.org/bottle.py
 # ... or ... pip install bottle
-from bottle import auth_basic, get, post, route, request, run, static_file, HTTPResponse, template, abort, view, redirect
+from bottle import route, request, run, static_file, HTTPResponse, template, abort, view, redirect
 import paho.mqtt.client as paho   # pip install paho-mqtt
 import bottlesession as bs
 import os
@@ -211,7 +211,7 @@ def uptime(seconds=0):
     return string
 
 
-@get('/blurb')
+@route('/blurb', method="GET")
 @valid_user()
 def blurb():
     text =  """Homie OTA server running.
@@ -229,40 +229,40 @@ def blurb():
 
     return text
 
-@get('/firmware')
+@route('/firmwares', method="GET")
 @valid_user()
 def firmware():
     fw = scan_firmware()
     return template('templates/firmware', base_url=OTA_BASE_URL, fw=fw)
 
-@get('/')
+@route('/devices', method="GET")
 @valid_user()
 def inventory():
     fw = scan_firmware()
     return template('templates/inventory', base_url=OTA_BASE_URL, db=db, fw=fw)
 
-@get('/<filename:re:.*\\.css>')
+@route('/<filename:re:.*\\.css>', method="GET")
 @valid_user()
 def stylesheets(filename):
     return static_file(filename, root='static/css')
 
-@get('/<filename:re:.*\\.png>')
+@route('/<filename:re:.*\\.png>', method="GET")
 @valid_user()
 def png(filename):
     return static_file(filename, root='static/img')
 
-@get('/<filename:re:.*\\.js>')
+@route('/<filename:re:.*\\.js>', method="GET")
 @valid_user()
 def javascript(filename):
     return static_file(filename, root='static/js')
 
-@get('/log')
+@route('/log', method="GET")
 @valid_user()
 def showlog():
     logdata = open(LOGFILE, "r").read()
     return template('templates/log', base_url=OTA_BASE_URL, data=logdata)
 
-@get('/device/<device>')
+@route('/device/<device>', method="GET")
 @valid_user()
 def showdevice(device):
 
@@ -487,7 +487,7 @@ def scan_firmware():
 # header X-Esp8266-Version = d40655e0=button-homie@1.0.0->a75ebc7c7f@1.0.1
 # header Content-Type = text/plain
 
-@get(OTA_ENDPOINT)
+@route(OTA_ENDPOINT, method="GET")
 def ota():
 
     headers = request.headers
