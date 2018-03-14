@@ -458,11 +458,11 @@ def scan_firmware():
         fw[fw_file]['firmware'] = firmware
         fw[fw_file]['version'] = version
 
-        description = ""
-        try:
-            description = open("%s/%s-%s.txt" % (OTA_FIRMWARE_ROOT, firmware, version), "r").read()
-        except:
-            pass
+        if os.path.isfile("%s/%s-%s.txt" % (OTA_FIRMWARE_ROOT, firmware, version)):
+            with open("%s/%s-%s.txt" % (OTA_FIRMWARE_ROOT, firmware, version), "r") as fp:
+                description = fp.read()
+        else:
+            description = ""
         fw[fw_file]['description'] = description
 
 
