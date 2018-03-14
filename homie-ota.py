@@ -232,8 +232,11 @@ def blurb():
 @route('/firmwares', method="GET")
 @valid_user()
 def firmware():
-    fw = scan_firmware()
-    return template('templates/firmware', base_url=OTA_BASE_URL, fw=fw)
+    firmwares = scan_firmware()
+    data = []
+    for fw in firmwares:
+        data.append({'filename':fw, 'firmware':firmwares[fw]['firmware'], 'version':firmwares[fw]['version'], 'description':firmwares[fw]['description'], 'size':firmwares[fw]['size']})
+    return json.dumps(data)
 
 @route('/devices', method="GET")
 @valid_user()
