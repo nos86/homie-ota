@@ -1,6 +1,6 @@
 <html>
     <body>
-        %if error:
+        %if defined('error') :
             <fieldset><legend>Notice</legend>{{error}}</fieldset>
          %end
         <form action="/login" method="post">
