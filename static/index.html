@@ -21,15 +21,41 @@
     <div id="wrapper"><vue-snotify></vue-snotify>
 
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand"> <a href="#">Home </a></li>
-                <li> <a href="#">Dashboard </a></li>
-                <li> <a href="#">Dashboard </a></li>
-                <li> <a href="#">Dashboard </a></li>
-            </ul>
+            <h1 class="text-center text-secondary" style="margin-top:20px;">Firmwares &nbsp;<i class="fa fa-upload text-primary" v-on:click="showModal('#firmware-upload-modal')"></i></h1>
+            <div v-for="firmware in firmwares">
+                <div class="card" style="margin-right:10px;margin-left:10px;margin-bottom:10px;">
+                    <div class="card-body">
+                        <h4 class="card-title">&lt;&lt; firmware.firmware &gt;&gt; &nbsp;<span class="badge badge-primary">&lt;&lt; firmware.version &gt;&gt;</span></h4>
+                        <h6 class="text-muted card-subtitle mb-2">&lt;&lt; firmware.filename &gt;&gt;</h6><em>&lt;&lt; firmware.description &gt;&gt;</em>
+                        <div class="row">
+                            <div class="col-md-3"><span>Size</span></div>
+                            <div class="col-md-9"><span>&lt;&lt; firmware.size &gt;&gt;</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="page-content-wrapper">
             <div class="container-fluid">
+                <div class="modal fade" role="dialog" tabindex="-1" id="firmware-upload-modal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Upload new firmware</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-3"><span>File</span></div>
+                                    <div class="col-9"><input type="file" name="upload" id="firmware-new-file"></div>
+                                </div>
+                                <div class="row" style="margin-top:10px;">
+                                    <div class="col-3"><span>Description</span></div>
+                                    <div class="col"><input class="form-control-sm" type="text" name="description" id="new-firwmare-description" style="width:100%"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" type="button" v-on:click="uploadFirmware()">Save</button></div>
+                        </div>
+                    </div>
+                </div>
                 <nav class="navbar navbar-light navbar-expand-md navigation-clean">
                     <div class="container"><a class="navbar-brand" href="#"><img src="assets/img/homie.png" style="height:50px;"><span>Homie OTA</span></a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div
@@ -37,7 +63,7 @@
                             <ul class="nav navbar-nav ml-auto">
                                 <li class="nav-item" role="presentation"><a class="nav-link" href="#menu-toggle" id="menu-toggle"><i class="fa fa-flask" style="margin-right:5px;"></i>Firmwares</a></li>
                                 <li class="nav-item" role="presentation"><a class="nav-link" href="#"><i class="fa fa-search" style="margin-right:5px;"></i>Logs</a></li>
-                                <li class="nav-item" role="presentation"><a class="nav-link text-danger" href="#"><i class="fa fa-sign-out" style="margin-right:5px;"></i>Logout</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link text-danger" href="/logout"><i class="fa fa-sign-out" style="margin-right:5px;"></i>Logout</a></li>
                             </ul>
                     </div>
             </div>
