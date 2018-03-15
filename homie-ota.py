@@ -137,6 +137,9 @@ valid_user = bs.authenticator(session_manager, login_url='/login')
 @view('static/login.html')
 def login():
    session = session_manager.get_session()
+   if HTTP_USER=="":
+    session['valid'] = True
+    session_manager.save(session)
    if session['valid']:
        redirect('/')
 
