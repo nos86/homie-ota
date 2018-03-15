@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homie OTA</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/Footer-Basic.css">
+    <link rel="stylesheet" href="assets/css/Login-Form-Clean.css">
+    <link rel="stylesheet" href="assets/css/Navigation-Clean.css">
+    <link rel="stylesheet" href="assets/css/Sidebar-Menu.css">
+    <link rel="stylesheet" href="assets/css/Sidebar-Menu1.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand"> <a href="#">Home </a></li>
+                <li> <a href="#">Dashboard </a></li>
+                <li> <a href="#">Dashboard </a></li>
+                <li> <a href="#">Dashboard </a></li>
+            </ul>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="container-fluid">
+                <nav class="navbar navbar-light navbar-expand-md navigation-clean">
+                    <div class="container"><a class="navbar-brand" href="#">Homie OTA</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse"
+                            id="navcol-1">
+                            <ul class="nav navbar-nav ml-auto">
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="#menu-toggle" id="menu-toggle"><i class="fa fa-flask" style="margin-right:5px;"></i>Firmwares</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="#"><i class="fa fa-search" style="margin-right:5px;"></i>Logs</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link text-danger" href="#"><i class="fa fa-sign-out" style="margin-right:5px;"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <div class="row">
+                    <div class="col-xl-3 collapse" id="sidebar"><span>Text</span></div>
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-md-6 col-xl-4" v-for="device in devices">
+                                <div class="card">
+                                    <div class="card-body" style="padding-bottom:10px;">
+                                        <div class="row">
+                                            <div class="col-sm-8 col-xl-9">
+                                                <h4>&lt;&lt; device.name &gt;&gt;</h4>
+                                            </div>
+                                            <div class="col-sm-4 col-xl-3" style="margin-top:6px;"><span class="badge badge-pill badge-danger" v-if="!device.online">OFFLINE</span>
+                                                <div class="progress" v-else="" style="height:14px;width:63px;font-size:13px;">
+                                                    <div class="progress-bar progress-bar-animated" v-bind:aria-valuenow="device.power" aria-valuenim="0" aria-valuemax="100" v-bind:style="{width: device.power +'%'}" v-bind:class="{'bg-danger': device.power<30, 'bg-warning':device.power>=30 &amp; device.power<80, 'bg-success':device.power>=68}"><span v-show="device.power>40">&lt;&lt; device.power &gt;&gt;%</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h6 class="text-muted card-subtitle mb-2" style="margin-top:0;">&lt;&lt; device.firmware &gt;&gt; &nbsp;<span class="badge badge-primary">v&lt;&lt; device.fw_version &gt;&gt;</span><br></h6>
+                                        <div class="row" id="device">
+                                            <div class="col-sm-6 col-md-5 col-xl-5"><i class="fa fa-cube" style="margin-right:5px;"></i><span>Device</span></div>
+                                            <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.device_name &gt;&gt;</span></div>
+                                        </div>
+                                        <div class="row" id="uptime">
+                                            <div class="col-sm-6 col-md-5"><i class="fa fa-clock-o" style="margin-right:5px;"></i><span>Up-time</span></div>
+                                            <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.uptime &gt;&gt;</span></div>
+                                        </div>
+                                        <div class="row" id="ip">
+                                            <div class="col-sm-6 col-md-5"><i class="fa fa-sitemap" style="margin-right:5px;"></i><span>IP</span></div>
+                                            <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.ip &gt;&gt;</span></div>
+                                        </div>
+                                        <div class="row" id="homie">
+                                            <div class="col-sm-6 col-md-5"><i class="fa fa-university" style="margin-right:5px;"></i><span>Homie</span></div>
+                                            <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.homie_ver &gt;&gt;</span></div>
+                                        </div>
+                                        <div class="row" id="implementation">
+                                            <div class="col-sm-6 col-md-5"><i class="fa fa-gears" style="margin-right:5px;"></i><span>Implem.</span></div>
+                                            <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.implementation &gt;&gt;</span></div>
+                                        </div>
+                                        <div class="row" id="wifi">
+                                            <div class="col-sm-6 col-md-5"><i class="fa fa-wifi" style="margin-right:5px;"></i><span>SSID</span></div>
+                                            <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.wifi &gt;&gt;</span></div>
+                                        </div>
+                                        <div class="row" id="mqtt">
+                                            <div class="col-sm-6 col-md-5"><i class="fa fa-feed" style="margin-right:5px;"></i><span>MQTT &lt;&lt; device.mqtt_auth &gt;&gt;</span></div>
+                                            <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.mqtt_address &gt;&gt;:&lt;&lt; device.mqtt_port &gt;&gt;</span></div>
+                                        </div>
+                                        <div class="row" style="margin-top:15px;">
+                                            <div class="col-4 offset-0 text-center" id="update"><i class="fa fa-cloud-download text-primary" style="font-size:25px;" v-show="device.ota"></i><span style="font-size:10px;" v-show="device.ota"><br>Update</span></div>
+                                            <div class="col-4 offset-0 text-center" id="show-more"><i class="fa fa-search-plus" style="font-size:25px;"></i><span style="font-size:10px;"><br>Show More<br></span></div>
+                                            <div class="col-4 offset-0 text-center" id="delete"><i class="fa fa-trash text-danger" style="font-size:25px;"></i><span class="text-danger" style="font-size:10px;"><br>Delete<br></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/Sidebar-Menu.js"></script>
+</body>
+
+</html>

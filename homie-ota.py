@@ -268,9 +268,9 @@ def inventory():
 
 @route('/', method="GET")
 @valid_user()
+@view('static/index.html')
 def main_view():
-    fw = scan_firmware()
-    return template('templates/inventory', base_url=OTA_BASE_URL, db=db, fw=fw)
+    pass
 
 @route('/assets/<filename:path>', method="GET")
 def getAsset(filename):
