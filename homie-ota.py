@@ -328,6 +328,7 @@ def upload():
        Store the binary firmware into a corresponding subdirectory in firmwares/
        '''
 
+    resp = {'status': 'ok', 'reason':''}
     upload = request.files.upload
     description = request.forms.get('description')
 
@@ -342,8 +343,9 @@ def upload():
         regex_version_result = regex_version.search(firmware_binary)
 
         if not regex_name_result or not regex_version_result:
-            resp = "No valid firmware in %s" % filename
-            logging.info(resp)
+            resp['reason'] = "No valid firmware in %s" % filename
+            resp['status'] = 'not ok'
+            logging.info(resp['reason'])
             return resp
 
         fwname = regex_name_result.group(1).decode('utf-8')
@@ -356,8 +358,9 @@ def upload():
             f.write(firmware_binary)
             f.close()
         except Exception as e:
-            resp = "Cannot write %s: %s" % (fw_file, str(e))
-            logging.info(resp)
+            resp['reason'] = "Cannot write %s: %s" % (fw_file, str(e))
+            resp['status'] = 'not ok'
+            logging.info(resp['reason'])
             return resp
 
         try:
@@ -365,15 +368,17 @@ def upload():
             f.write(description)
             f.close()
         except Exception as e:
-            resp = "Cannot write description to file %s: %s" % (description_file, str(e))
-            logging.info(resp)
+            resp['reason'] = "Cannot write description to file %s: %s" % (description_file, str(e))
+            resp['status'] = 'not ok'
+            logging.info(resp['reason'])
             return resp
 
-        resp = "Firmware from %s uploaded as %s" % (filename, fw_file)
-        logging.info(resp)
+        resp['reason'] = "Firmware from %s uploaded as %s" % (filename, fw_file)
+        logging.info(resp['reason'])
         return resp
-
-    return "File is missing"
+    else:
+        resp = {'status': 'not ok', 'reason':"File is missing"}
+    return resp
 
 @route('/update', method='POST')
 @valid_user()
