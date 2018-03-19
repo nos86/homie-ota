@@ -440,6 +440,10 @@ def update():
 @route('/device/<device_id>', method='DELETE')
 @valid_user()
 def delete_device(device_id):
+    if not device_id in db:
+        return {'status':'not ok', 'reason':'Unable to find device'}
+    elif db[device_id]["online"] == "true":
+        return {'status': 'not ok', 'reason': 'Device is alive'}
     topics = "%s/%s/#" % (MQTT_SENSOR_PREFIX, device_id)
     mqttc.loop_stop()
     mqttc.subscribe(topics, 0)
@@ -459,7 +463,7 @@ def delete_device(device_id):
     del db[device_id]
     del sensors[device_id]
 
-    return info
+    return {'status':'ok', 'reason':info}
 
 def scan_firmware():
     fw = {}
