@@ -117,7 +117,7 @@
                                     <div class="row" style="margin-top:15px;">
                                         <div class="col-4 offset-0 text-center" id="update"><i class="fa fa-cloud-download text-primary" style="font-size:25px;" v-show="device.ota"></i><span style="font-size:10px;" v-show="device.ota"><br>Update</span></div>
                                         <div class="col-4 offset-0 text-center" id="show-more"><i class="fa fa-search-plus" style="font-size:25px;"></i><span style="font-size:10px;"><br>Show More<br></span></div>
-                                        <div class="col-4 offset-0 text-center" id="delete"><i class="fa fa-trash text-danger" style="font-size:25px;"></i><span class="text-danger" style="font-size:10px;"><br>Delete<br></span></div>
+                                        <div class="col-4 offset-0 text-center" id="delete" v-on:click = "removeDevice(device)"><i class="fa fa-trash text-danger" style="font-size:25px;"></i><span class="text-danger" style="font-size:10px;"><br>Delete<br></span></div>
                                     </div>
                                 </div>
                             </div>

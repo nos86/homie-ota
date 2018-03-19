@@ -52,6 +52,25 @@ var app = new Vue({
       $('#firmware-upload-modal').modal('hide')
     };
     xhr.send(formData);
+  },
+  removeDevice: function(device){
+    console.log(device.device)
+    $.ajax({url: '/device/'+device.device,
+    type: 'DELETE',
+    dataType: 'json',
+    success: function(data){
+      if(data.status == 'ok'){
+        app.$snotify.success(data.reason)
+        let idx = app.devices.map(item => item.device).indexOf(device.device)
+        app.devices.splice(idx, 1)
+      }else{
+        app.$snotify.warning(data.reason)
+      }
+    },
+    error: function(data){
+      app.$snotify.error(data)
+    }
+  })
   }
   }
 });
