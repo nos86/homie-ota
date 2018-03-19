@@ -308,7 +308,7 @@ def delete(fw_file):
     if not os.path.exists(fw_path):
         resp = "Unable to delete firmware %s, does not exist" % (fw_path)
         logging.warn(resp)
-        return json.dumps({'status': 'FAILED', 'reason': resp})
+        return json.dumps({'status': 'not ok', 'reason': resp})
 
     filename, file_ext = os.path.splitext(fw_file)
     description_file = filename + '.txt'
@@ -320,7 +320,7 @@ def delete(fw_file):
 
     resp = "Deleted firmware %s" % (fw_file)
     logging.info(resp)
-    return json.dumps({'status':'OK', 'reason': 'resp'})
+    return json.dumps({'status':'ok', 'reason': 'resp'})
 
 @route('/upload', method='POST')
 @valid_user()
