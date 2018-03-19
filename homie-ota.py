@@ -621,6 +621,9 @@ def on_sensor(mosq, userdata, msg):
         t = t[len(MQTT_SENSOR_PREFIX) + 1:]      # remove MQTT_SENSOR_PREFIX/ from begining of topic
         device, key, subkey = t.split('/')
 
+        if not device in db:
+            db[device] = {}
+
         if key == "$fw":
             if subkey == "name":
                 db[device]["fwname"] = str(msg.payload)
