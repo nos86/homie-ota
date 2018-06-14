@@ -1,0 +1,4 @@
+.btn.dropdown-toggle.menu::before {
+  display:none;
+}
+

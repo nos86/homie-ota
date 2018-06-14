@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="assets/css/vue-snotify-material.css">
 </head>
 
-<body>
+<body style="background-color:rgb(239,83,80);">
     <div id="wrapper"><vue-snotify></vue-snotify>
 
-        <div id="sidebar-wrapper">
-            <h1 class="text-center text-secondary" style="margin-top:20px;">Firmwares &nbsp;<i class="material-icons text-success" v-on:click="showModal('#firmware-upload-modal')">note_add</i></h1>
+        <div id="sidebar-wrapper" style="background-color:rgb(252,252,252);margin-top:-5px;box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
+            <h1 class="text-center" style="margin-top:20px;color:rgb(239,83,80);">Firmwares &nbsp;<i class="material-icons text-success" v-on:click="showModal('#firmware-upload-modal')">note_add</i></h1>
             <div v-for="firmware in firmwares">
                 <div class="card" style="margin-right:10px;margin-left:10px;margin-bottom:10px;">
                     <div class="card-body">
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="page-content-wrapper">
+        <div class="page-content-wrapper" style="background-color:rgba(241,247,252,0);">
             <div class="container-fluid">
                 <div class="modal fade" role="dialog" tabindex="-1" id="firmware-upload-modal">
                     <div class="modal-dialog" role="document">
@@ -56,68 +56,56 @@
                         </div>
                     </div>
                 </div>
-                <nav class="navbar navbar-light navbar-expand-md navigation-clean">
-                    <div class="container"><a class="navbar-brand" href="#"><img src="assets/img/homie.png" style="height:50px;"><span>Homie OTA</span></a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                        <div
-                            class="collapse navbar-collapse" id="navcol-1">
+                <nav class="navbar navbar-light navbar-expand-md navigation-clean" style="padding:10px;margin:0px;margin-bottom:10px;padding-right:0px;padding-left:0px;margin-top:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
+                    <div class="container" style="max-width:100%"><a class="navbar-brand" href="#" style="padding-bottom:0px;padding-top:0px;"><img src="assets/img/homie.png" style="height:50px;"><span>Homie OTA</span></a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"
+                            style="margin-right:10px;"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon" style="margin-right:1px;"></span></button>
+                        <div class="collapse navbar-collapse" id="navcol-1">
                             <ul class="nav navbar-nav ml-auto">
                                 <li class="nav-item" role="presentation"><a class="nav-link" id="menu-toggle"><i class="fa fa-flask" style="margin-right:5px;"></i>Firmwares</a></li>
                                 <li class="nav-item" role="presentation"><a class="nav-link" href="#"><i class="fa fa-search" style="margin-right:5px;"></i>Logs</a></li>
                                 <li class="nav-item" role="presentation"><a class="nav-link text-danger" href="/logout"><i class="fa fa-sign-out" style="margin-right:5px;"></i>Logout</a></li>
                             </ul>
+                        </div>
                     </div>
-            </div>
-            </nav>
-            <div class="row">
-                <div class="col-xl-3 collapse" id="sidebar"><span>Text</span></div>
-                <div class="col-xl-12">
-                    <div class="row">
-                        <div class="col-md-6 col-xl-4" v-for="device in devices" style="margin-bottom:15px;">
-                            <div class="card">
-                                <div class="card-body" style="padding-bottom:10px;">
-                                    <div class="row">
-                                        <div class="col-sm-8 col-xl-9">
-                                            <h4>&lt;&lt; device.name &gt;&gt;</h4>
+                </nav>
+                <div class="row">
+                    <div class="col-xl-3 collapse" id="sidebar"><span>Text</span></div>
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-5 col-xl-4" v-for="device in devices" style="margin-bottom:15px;">
+                                <div class="card">
+                                    <div class="card-body" style="padding-bottom:10px;">
+                                        <div class="row">
+                                            <div class="col-sm-8 col-xl-9" style="height:20px;">
+                                                <div class="dropdown"><a class="btn btn-link dropdown-toggle menu" data-toggle="dropdown" aria-expanded="false" role="button" href="#" style="padding-right:0px;padding-left:0px;padding-top:0px;">&lt;&lt; device.name &gt;&gt;</a>
+                                                    <div
+                                                        class="dropdown-menu dropdown-menu-left" role="menu" style="margin-top:-6px;"><a class="dropdown-item" role="presentation" href="#" v-show="device.ota"><i class="fa fa-cloud-download text-primary" style="font-size:25px;margin-right:5px;" v-show="device.ota"></i>Update</a><a class="dropdown-item"
+                                                            role="presentation" href="#"><i class="fa fa-search-plus" style="font-size:25px;margin-right:5px;"></i>Show More</a><a class="dropdown-item" role="presentation" href="#"><i class="fa fa-trash text-danger" style="font-size:25px;margin-right:5px;"></i>Delete</a></div>
+                                            </div>
+                                            <h4></h4>
                                         </div>
                                         <div class="col-sm-4 col-xl-3" style="margin-top:6px;"><span class="badge badge-pill badge-danger" v-if="device.online == &quot;false&quot;">OFFLINE</span>
-                                            <div class="progress" v-else="" style="height:14px;width:63px;font-size:13px;">
+                                            <div class="progress" v-else="" style="height:14px;/*width:63px;*/font-size:13px;">
                                                 <div class="progress-bar progress-bar-animated" v-bind:aria-valuenow="device.signal" aria-valuenim="0" aria-valuemax="100" v-bind:style="{width: device.signal +'%'}" v-bind:class="{'bg-danger': device.signal<30, 'bg-warning':device.signal>=30 &amp; device.signal<80, 'bg-success':device.signal>=80}"><span v-show="device.signal>40">&lt;&lt; device.signal &gt;&gt;%</span></div>
                                             </div>
                                         </div>
                                     </div>
                                     <h6 class="text-muted card-subtitle mb-2" style="margin-top:0;">&lt;&lt; device.fwname &gt;&gt; &nbsp;<span class="badge badge-primary">v&lt;&lt; device.fwversion &gt;&gt;</span><br></h6>
                                     <div class="row" id="device">
-                                        <div class="col-sm-6 col-md-5 col-xl-5"><i class="fa fa-cube" style="margin-right:5px;"></i><span>Device</span></div>
+                                        <div class="col-sm-6 col-md-5 col-lg-5 col-xl-5"><i class="fa fa-cube" style="margin-right:5px;"></i><span>Device</span></div>
                                         <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.device &gt;&gt;</span></div>
                                     </div>
                                     <div class="row" id="uptime">
-                                        <div class="col-sm-6 col-md-5"><i class="fa fa-clock-o" style="margin-right:5px;"></i><span>Up-time</span></div>
+                                        <div class="col-sm-6 col-md-5 col-lg-5"><i class="fa fa-clock-o" style="margin-right:5px;"></i><span>Up-time</span></div>
                                         <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.human_uptime &gt;&gt;</span></div>
                                     </div>
                                     <div class="row" id="ip">
                                         <div class="col-sm-6 col-md-5"><i class="fa fa-sitemap" style="margin-right:5px;"></i><span>IP</span></div>
                                         <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.localip &gt;&gt;</span></div>
                                     </div>
-                                    <div class="row" id="homie">
-                                        <div class="col-sm-6 col-md-5"><i class="fa fa-university" style="margin-right:5px;"></i><span>Homie</span></div>
-                                        <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.homie &gt;&gt;</span></div>
-                                    </div>
-                                    <div class="row" id="implementation">
-                                        <div class="col-sm-6 col-md-5"><i class="fa fa-gears" style="margin-right:5px;"></i><span>Implem.</span></div>
-                                        <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.implementation &gt;&gt;</span></div>
-                                    </div>
                                     <div class="row" id="wifi">
                                         <div class="col-sm-6 col-md-5"><i class="fa fa-wifi" style="margin-right:5px;"></i><span>SSID</span></div>
                                         <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.wifi_ssid &gt;&gt;</span></div>
-                                    </div>
-                                    <div class="row" id="mqtt">
-                                        <div class="col-sm-6 col-md-5"><i class="fa fa-feed" style="margin-right:5px;"></i><span>MQTT &lt;&lt; device.mqtt_auth &gt;&gt;</span></div>
-                                        <div class="col-11 col-sm-6 col-md-7 offset-1 offset-sm-0"><span>&lt;&lt; device.mqtt_host &gt;&gt;:&lt;&lt; device.mqtt_port &gt;&gt;</span></div>
-                                    </div>
-                                    <div class="row" style="margin-top:15px;">
-                                        <div class="col-4 offset-0 text-center" id="update"><i class="fa fa-cloud-download text-primary" style="font-size:25px;" v-show="device.ota"></i><span style="font-size:10px;" v-show="device.ota"><br>Update</span></div>
-                                        <div class="col-4 offset-0 text-center" id="show-more"><i class="fa fa-search-plus" style="font-size:25px;"></i><span style="font-size:10px;"><br>Show More<br></span></div>
-                                        <div class="col-4 offset-0 text-center" id="delete"><i class="fa fa-trash text-danger" style="font-size:25px;"></i><span class="text-danger" style="font-size:10px;"><br>Delete<br></span></div>
                                     </div>
                                 </div>
                             </div>
