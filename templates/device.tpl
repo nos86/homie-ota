@@ -10,7 +10,7 @@
 <h2>Homie device details</h2>
 
 <p>
-[<a href="{{base_url}}/">Homie device inventory</a>] [<a href="{{base_url}}/log">Log</a>] [<a class="delete" data-delete-url="{{base_url}}/device/{{device}}" href="#">Delete</a>]
+[<a href="{{base_url}}/">Come back</a>] [<a href="{{base_url}}/log">Log</a>]
 </p>
 
 <h3>Details for device {{device}}</h3>

@@ -20,8 +20,8 @@
 <body style="background-color:rgb(239,83,80);">
     <div id="wrapper"><vue-snotify></vue-snotify>
 
-        <div id="sidebar-wrapper" style="background-color:rgb(252,252,252);margin-top:-5px;box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
-            <h1 class="text-center" style="margin-top:20px;color:rgb(239,83,80);">Firmwares &nbsp;<i class="material-icons text-success" v-on:click="showModal('#firmware-upload-modal')">note_add</i></h1>
+        <div id="sidebar-wrapper" style="margin-top:-5px;box-shadow:0 2px 4px rgba(0,0,0,0.4);background-image:url(&quot;assets/img/background-wallpaper-website-wallpaper-website-background-website-background-wallpapers-7.jpg&quot;);background-position:right;background-size:cover;">
+            <h1 class="text-center" style="margin-top:20px;color:rgb(239,83,80);">Firmwares &nbsp;<i class="material-icons" v-on:click="showModal('#firmware-upload-modal')" style="color:rgb(239,83,80);">note_add</i></h1>
             <div v-for="firmware in firmwares">
                 <div class="card" style="margin-right:10px;margin-left:10px;margin-bottom:10px;">
                     <div class="card-body">
@@ -57,12 +57,12 @@
                     </div>
                 </div>
                 <nav class="navbar navbar-light navbar-expand-md navigation-clean" style="padding:10px;margin:0px;margin-bottom:10px;padding-right:0px;padding-left:0px;margin-top:5px; box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
-                    <div class="container" style="max-width:100%"><a class="navbar-brand" href="#" style="padding-bottom:0px;padding-top:0px;"><img src="assets/img/homie.png" style="height:50px;"><span>Homie OTA</span></a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"
+                    <div class="container" style="max-width:100%"><a class="navbar-brand" href="#" style="padding-bottom:0px;padding-top:0px;"><img src="assets/img/homie-logo.png" style="height:45px;margin-right:10px;"><span>Homie OTA</span></a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"
                             style="margin-right:10px;"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon" style="margin-right:1px;"></span></button>
                         <div class="collapse navbar-collapse" id="navcol-1">
                             <ul class="nav navbar-nav ml-auto">
-                                <li class="nav-item" role="presentation"><a class="nav-link" id="menu-toggle"><i class="fa fa-flask" style="margin-right:5px;"></i>Firmwares</a></li>
-                                <li class="nav-item" role="presentation"><a class="nav-link" href="#"><i class="fa fa-search" style="margin-right:5px;"></i>Logs</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="#" id="menu-toggle"><i class="fa fa-flask" style="margin-right:5px;"></i>Firmwares</a></li>
+                                <li class="nav-item" role="presentation"><a class="nav-link" href="log"><i class="fa fa-search" style="margin-right:5px;"></i>Logs</a></li>
                                 <li class="nav-item" role="presentation"><a class="nav-link text-danger" href="/logout"><i class="fa fa-sign-out" style="margin-right:5px;"></i>Logout</a></li>
                             </ul>
                         </div>
@@ -74,13 +74,14 @@
                         <div class="row">
                             <div class="col-md-6 col-lg-5 col-xl-4" v-for="device in devices" style="margin-bottom:15px;">
                                 <div class="card">
-                                    <div class="card-body" style="padding-bottom:10px;">
+                                    <div class="card-body" style="padding:10px 15px;">
                                         <div class="row">
                                             <div class="col-sm-8 col-xl-9" style="height:20px;">
-                                                <div class="dropdown"><a class="btn btn-link dropdown-toggle menu" data-toggle="dropdown" aria-expanded="false" role="button" href="#" style="padding-right:0px;padding-left:0px;padding-top:0px;">&lt;&lt; device.name &gt;&gt;</a>
+                                                <div class="dropdown"><a class="btn btn-link dropdown-toggle menu" data-toggle="dropdown" aria-expanded="false" role="button" href="#" style="padding-right:0px;padding-left:0px;padding-top:0px;color:rgb(239,83,80);">&lt;&lt; device.name &gt;&gt;</a>
                                                     <div
-                                                        class="dropdown-menu dropdown-menu-left" role="menu" style="margin-top:-6px;"><a class="dropdown-item" role="presentation" href="#" v-show="device.ota"><i class="fa fa-cloud-download text-primary" style="font-size:25px;margin-right:5px;" v-show="device.ota"></i>Update</a><a class="dropdown-item"
-                                                            role="presentation" href="#"><i class="fa fa-search-plus" style="font-size:25px;margin-right:5px;"></i>Show More</a><a class="dropdown-item" role="presentation" href="#"><i class="fa fa-trash text-danger" style="font-size:25px;margin-right:5px;"></i>Delete</a></div>
+                                                        class="dropdown-menu dropdown-menu-left" role="menu" style="margin-top:-12px;"><a class="dropdown-item" role="presentation" href="#" v-show="device.ota"><i class="fa fa-cloud-download text-primary" style="font-size:20px;margin-right:5px;" v-show="device.ota"></i>Update</a><a class="dropdown-item"
+                                                            role="presentation" v-bind:href="'device/'+device.device"><i class="fa fa-search-plus" style="font-size:20px;margin-right:5px;"></i>Show More</a><a class="dropdown-item" role="presentation" href="#"
+                                                            style="color:red;"><i class="fa fa-trash text-danger" style="font-size:20px;margin-right:5px;"></i>Delete</a></div>
                                             </div>
                                             <h4></h4>
                                         </div>

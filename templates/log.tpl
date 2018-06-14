@@ -10,7 +10,7 @@
 <h2>Homie OTA server log</h2>
 
 <p>
-[<a href="{{base_url}}/">Homie device inventory</a>] [<a href="{{base_url}}/firmware">Homie device firmware</a>]
+[<a href="{{base_url}}/">Come back</a>]
 </p>
 
 <h3>Log</h3>
